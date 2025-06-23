@@ -1,11 +1,8 @@
 package com.github.kyungmin08g.zephyro.core.logger;
 
-import org.springframework.stereotype.Component;
-
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-@Component
 public class ZephyroLogger {
   private final BlockingQueue<String> buffer =  new LinkedBlockingQueue<>(1000);
   private final Thread thread;
