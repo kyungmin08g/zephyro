@@ -1,5 +1,7 @@
 package com.github.kyungmin08g.zephyro.core.logger;
 
+import com.github.kyungmin08g.zephyro.core.utils.enums.LogLevel;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -24,7 +26,8 @@ public class ZephyroLogger {
     this.thread.start();
   }
 
-  public void info(String log) {
+  public void info(LogLevel level, String className, String message) {
+    String log = String.format("[%s]  [%s] %s", level, className, message);
     enqueue(log);
   }
 
