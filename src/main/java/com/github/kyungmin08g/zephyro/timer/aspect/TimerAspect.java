@@ -1,4 +1,4 @@
-package com.github.kyungmin08g.zephyro.aspect;
+package com.github.kyungmin08g.zephyro.timer.aspect;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -11,7 +11,7 @@ import org.springframework.util.StopWatch;
 public class TimerAspect {
   private final StopWatch timer = new StopWatch();
 
-  @Around("@annotation(com.github.kyungmin08g.zephyro.annotation.ExecutionTimer)")
+  @Around("@annotation(com.github.kyungmin08g.zephyro.timer.annotation.ExecutionTimer)")
   public Object runTimer(ProceedingJoinPoint process) {
     timer.start();
 

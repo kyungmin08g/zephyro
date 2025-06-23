@@ -1,6 +1,6 @@
 package com.github.kyungmin08g.zephyro.config;
 
-import com.github.kyungmin08g.zephyro.aspect.TimerAspect;
+import com.github.kyungmin08g.zephyro.timer.aspect.TimerAspect;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

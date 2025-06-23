@@ -1,4 +1,4 @@
-package com.github.kyungmin08g.zephyro.annotation;
+package com.github.kyungmin08g.zephyro.timer.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

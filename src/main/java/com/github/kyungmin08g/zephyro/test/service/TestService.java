@@ -1,6 +1,6 @@
 package com.github.kyungmin08g.zephyro.test.service;
 
-import com.github.kyungmin08g.zephyro.annotation.ExecutionTimer;
+import com.github.kyungmin08g.zephyro.timer.annotation.ExecutionTimer;
 import org.springframework.stereotype.Service;
 
 @Service
