@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 public class TestService {
 
   @ExecutionTimer
-  public void print() {
+  public void testRunTimer() {
     try {
       Thread.sleep(4000);
       System.out.println("Hello World!");

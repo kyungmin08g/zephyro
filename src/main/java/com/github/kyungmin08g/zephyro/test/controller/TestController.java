@@ -15,7 +15,7 @@ public class TestController {
 
   @GetMapping(value = "")
   public ResponseEntity<Void> test() {
-    testService.print();
+    testService.testRunTimer();
     return ResponseEntity.ok().build();
   }
 }

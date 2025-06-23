@@ -14,7 +14,6 @@ public class TimerAspect {
   @Around("@annotation(com.github.kyungmin08g.zephyro.timer.annotation.ExecutionTimer)")
   public Object runTimer(ProceedingJoinPoint process) {
     timer.start();
-
     try {
       Object proceed = process.proceed();
       timer.stop();
