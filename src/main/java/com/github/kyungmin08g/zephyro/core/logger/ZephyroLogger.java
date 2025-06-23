@@ -4,7 +4,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ZephyroLogger {
-  private final BlockingQueue<String> buffer =  new LinkedBlockingQueue<>(1000);
+  private final BlockingQueue<String> buffer =  new LinkedBlockingQueue<>(2);
   private final Thread thread;
 
   public ZephyroLogger() {
@@ -24,18 +24,19 @@ public class ZephyroLogger {
     this.thread.start();
   }
 
-  public void info(String message) {
-    boolean offered = buffer.offer(message);
-    if (!offered) {
-      flushBuffer();
-      buffer.offer(message);
-    }
+  public void info(String log) {
+    enqueue(log);
   }
 
-  private synchronized void flushBuffer() {
-    String log;
-    while ((log = buffer.poll()) != null) {
-      System.out.println(log);
+  private void enqueue(String log) {
+    boolean isOverflow = buffer.offer(log);
+    if (!isOverflow) {
+      try {
+        buffer.put(log);
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+        e.fillInStackTrace();
+      }
     }
   }
 }
