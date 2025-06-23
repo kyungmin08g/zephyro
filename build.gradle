@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.github.kyungmin08g'
-version = '0.0.2-TEST'
+version = '0.0.3-TEST'
 
 java {
     withSourcesJar()
@@ -33,6 +33,10 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test:3.5.3'
 }
 
-jar { enabled = true }
 bootJar { enabled = false }
 test { useJUnitPlatform() }
+
+jar {
+    archiveClassifier = ''
+    enabled = true
+}
