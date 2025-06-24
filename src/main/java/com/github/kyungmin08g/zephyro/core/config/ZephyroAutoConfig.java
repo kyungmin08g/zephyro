@@ -1,5 +1,6 @@
 package com.github.kyungmin08g.zephyro.core.config;
 
+import com.github.kyungmin08g.zephyro.core.aspect.LoggerAspect;
 import com.github.kyungmin08g.zephyro.core.logger.ZephyroLogger;
 import com.github.kyungmin08g.zephyro.timer.aspect.TimerAspect;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -16,7 +17,8 @@ public class ZephyroAutoConfig {
   }
 
 //  @Bean
-//  public ZephyroLogger logger() {
-//    return new ZephyroLogger();
+//  @ConditionalOnMissingBean
+//  public LoggerAspect loggerAspect() {
+//    return new LoggerAspect();
 //  }
 }
