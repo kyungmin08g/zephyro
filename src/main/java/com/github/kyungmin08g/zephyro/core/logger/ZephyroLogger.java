@@ -1,92 +1,44 @@
 package com.github.kyungmin08g.zephyro.core.logger;
 
+import com.github.kyungmin08g.zephyro.core.logger.event.ZephyroLogEvent;
 import com.github.kyungmin08g.zephyro.core.utils.enums.LevelColor;
-import com.github.kyungmin08g.zephyro.core.utils.enums.LogLevel;
+import com.github.kyungmin08g.zephyro.core.utils.enums.Level;
+import com.lmax.disruptor.EventFactory;
+import com.lmax.disruptor.RingBuffer;
+import com.lmax.disruptor.dsl.Disruptor;
 
-import java.io.IOException;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 
 public class ZephyroLogger {
   private static final Integer BUFFER_SIZE = 1024;
-  private final BlockingQueue<String> buffer =  new LinkedBlockingQueue<>(BUFFER_SIZE);
-  private final Class<?> clazz;
 
-  private boolean isWarmUp = true;
+  private final EventFactory<ZephyroLogEvent> factory = ZephyroLogEvent::new;
+  private final Disruptor<ZephyroLogEvent> disruptor = new Disruptor<>(factory, BUFFER_SIZE, Executors.defaultThreadFactory());
+  private final RingBuffer<ZephyroLogEvent> ringBuffer = disruptor.getRingBuffer();
+  private final Class<?> clazz;
 
   public ZephyroLogger(Class<?> clazz) {
     this.clazz = clazz;
+    this.eventHandleRegister();
+  }
 
-    Thread thread = new Thread(() -> {
-      try {
-        while (!Thread.currentThread().isInterrupted()) {
-          String log = buffer.take();
-          if (!isWarmUp) {
-            System.out.write((log + "\n").getBytes());
-          }
-        }
-      } catch (InterruptedException e) {
-        Thread.currentThread().interrupt();
-        e.printStackTrace();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+  private void eventHandleRegister() {
+    disruptor.handleEventsWith((event, sequence, endOfBatch) -> {
+      System.out.write((event.getMessage() + "\n").getBytes());
     });
-    thread.setDaemon(true);
-    thread.start();
+    disruptor.start();
   }
 
-  private void enqueue(String log) {
-    boolean isOverflow = buffer.offer(log);
-    if (!isOverflow) {
-      try {
-        buffer.put(log);
-      } catch (InterruptedException e) {
-        Thread.currentThread().interrupt();
-        e.printStackTrace();
-      }
+  public void log(String message) {
+    long seq = ringBuffer.next();
+    try {
+      ZephyroLogEvent event = ringBuffer.get(seq);
+      event.setMessage(message);
+      event.setLevelColor(LevelColor.GREEN);
+      event.setLevel(Level.INFO);
+      event.setClazz(clazz);
+    } finally {
+      ringBuffer.publish(seq);
     }
-  }
-
-  public void warmUp() {
-    isWarmUp = true;
-    for (int i = 0; i < 50; i++) {
-      enqueue(
-        getLogFormat("", LevelColor.GREEN, LogLevel.INFO)
-      );
-    }
-    buffer.clear();
-    isWarmUp = false;
-  }
-
-  private String getLogFormat(String message, LevelColor color, LogLevel level) {
-    return String.format(
-      "%s[%s]%s %s%s%s : %s",
-      color.getColor(), level,
-      LevelColor.RESET.getColor(), LevelColor.WHITE.getColor(),
-      String.valueOf(clazz).split(" ")[1],
-      LevelColor.RESET.getColor(),
-      message
-    );
-  }
-
-  public void info(String message) {
-    String log = getLogFormat(message, LevelColor.GREEN, LogLevel.INFO);
-    enqueue(log);
-  }
-
-  public void warn(String message) {
-    String log = getLogFormat(message, LevelColor.YELLOW, LogLevel.WARN);
-    enqueue(log);
-  }
-
-  public void error(String message) {
-    String log = getLogFormat(message, LevelColor.RED, LogLevel.ERROR);
-    enqueue(log);
-  }
-
-  public void debug(String message) {
-    String log = getLogFormat(message, LevelColor.MAGENTA, LogLevel.DEBUG);
-    enqueue(log);
   }
 }

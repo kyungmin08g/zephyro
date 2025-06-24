@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum LogLevel {
+public enum Level {
 
   INFO("info"),
   ERROR("error"),

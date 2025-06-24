@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.github.kyungmin08g'
-version = '0.0.6-TEST'
+version = '0.0.7-TEST'
 
 java {
     withSourcesJar()
@@ -28,6 +28,7 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web:3.5.3'
     implementation 'org.springframework.boot:spring-boot-starter-aop:3.5.3'
+    implementation 'com.lmax:disruptor:4.0.0'
     compileOnly 'org.projectlombok:lombok:1.18.32'
     annotationProcessor 'org.projectlombok:lombok:1.18.32'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:3.5.3'

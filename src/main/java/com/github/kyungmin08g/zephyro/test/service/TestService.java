@@ -16,19 +16,17 @@ public class TestService {
     long totalLogTime = 0;
     long totalSoutTime = 0;
 
-    log.warmUp();
-
     long start = System.nanoTime();
-    log.info("성공!");
+    log.log("ZephyroLogger");
     long end = System.nanoTime();
     totalLogTime += (end - start);
 
     start = System.nanoTime();
-    System.out.println("성공!");
+    System.out.println("System.out.println");
     end = System.nanoTime();
     totalSoutTime += (end - start);
 
-    System.out.println("라이브러리 로깅: " + (totalLogTime) + "ns");
+    System.out.println("logging: " + (totalLogTime) + "ns");
     System.out.println("println: " + (totalSoutTime) + "ns");
   }
 }
