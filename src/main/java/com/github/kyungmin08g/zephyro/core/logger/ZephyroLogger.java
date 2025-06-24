@@ -43,10 +43,8 @@ public class ZephyroLogger {
   private String getLogFormat(String message, LevelColor color, LogLevel level) {
     return String.format(
       "%s[%s]%s %s%s%s : %s",
-      color.getColor(),
-      level,
-      LevelColor.RESET.getColor(),
-      LevelColor.WHITE.getColor(),
+      color.getColor(), level,
+      LevelColor.RESET.getColor(), LevelColor.WHITE.getColor(),
       String.valueOf(c).split(" ")[1],
       LevelColor.RESET.getColor(),
       message
