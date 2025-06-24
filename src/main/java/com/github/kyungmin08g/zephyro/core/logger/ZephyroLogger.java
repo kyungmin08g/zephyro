@@ -3,6 +3,7 @@ package com.github.kyungmin08g.zephyro.core.logger;
 import com.github.kyungmin08g.zephyro.core.utils.enums.LevelColor;
 import com.github.kyungmin08g.zephyro.core.utils.enums.LogLevel;
 
+import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -16,11 +17,13 @@ public class ZephyroLogger {
       try {
         while (!Thread.currentThread().isInterrupted()) {
           String log = buffer.take();
-          System.out.println(log);
+          System.out.write((log + "\n").getBytes());
         }
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
-        e.fillInStackTrace();
+        e.printStackTrace();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
       }
     });
 
@@ -35,7 +38,7 @@ public class ZephyroLogger {
         buffer.put(log);
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
-        e.fillInStackTrace();
+        e.printStackTrace();
       }
     }
   }
