@@ -1,16 +1,18 @@
 package com.github.kyungmin08g.zephyro.core.logger;
 
+import com.github.kyungmin08g.zephyro.core.utils.enums.LevelColor;
 import com.github.kyungmin08g.zephyro.core.utils.enums.LogLevel;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ZephyroLogger {
-  private final BlockingQueue<String> buffer =  new LinkedBlockingQueue<>(2);
-  private final Thread thread;
+  private final BlockingQueue<String> buffer =  new LinkedBlockingQueue<>(1000);
+  private final Class<?> c;
 
-  public ZephyroLogger() {
-    this.thread = new Thread(() -> {
+  public ZephyroLogger(Class<?> c) {
+    this.c = c;
+    Thread thread = new Thread(() -> {
       try {
         while (!Thread.currentThread().isInterrupted()) {
           String log = buffer.take();
@@ -22,13 +24,8 @@ public class ZephyroLogger {
       }
     });
 
-    this.thread.setDaemon(true);
-    this.thread.start();
-  }
-
-  public void info(LogLevel level, String className, String message) {
-    String log = String.format("[%s]  [%s] %s", level, className, message);
-    enqueue(log);
+    thread.setDaemon(true);
+    thread.start();
   }
 
   private void enqueue(String log) {
@@ -41,5 +38,38 @@ public class ZephyroLogger {
         e.fillInStackTrace();
       }
     }
+  }
+
+  private String getLogFormat(String message, LevelColor color, LogLevel level) {
+    return String.format(
+      "%s[%s]%s %s%s%s : %s",
+      color.getColor(),
+      level,
+      LevelColor.RESET.getColor(),
+      LevelColor.WHITE.getColor(),
+      String.valueOf(c).split(" ")[1],
+      LevelColor.RESET.getColor(),
+      message
+    );
+  }
+
+  public void info(String message) {
+    String log = getLogFormat(message, LevelColor.GREEN, LogLevel.INFO);
+    enqueue(log);
+  }
+
+  public void warn(String message) {
+    String log = getLogFormat(message, LevelColor.YELLOW, LogLevel.WARN);
+    enqueue(log);
+  }
+
+  public void error(String message) {
+    String log = getLogFormat(message, LevelColor.RED, LogLevel.ERROR);
+    enqueue(log);
+  }
+
+  public void debug(String message) {
+    String log = getLogFormat(message, LevelColor.MAGENTA, LogLevel.DEBUG);
+    enqueue(log);
   }
 }

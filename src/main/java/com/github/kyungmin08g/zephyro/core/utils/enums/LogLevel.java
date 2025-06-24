@@ -9,7 +9,7 @@ public enum LogLevel {
 
   INFO("info"),
   ERROR("error"),
-  WARNING("warning"),
+  WARN("warn"),
   DEBUG("debug");
 
   private final String value;

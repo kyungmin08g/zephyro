@@ -15,8 +15,8 @@ public class ZephyroAutoConfig {
     return new TimerAspect();
   }
 
-  @Bean
-  public ZephyroLogger logger() {
-    return new ZephyroLogger();
-  }
+//  @Bean
+//  public ZephyroLogger logger() {
+//    return new ZephyroLogger();
+//  }
 }
