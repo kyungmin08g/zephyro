@@ -8,25 +8,30 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ZephyroLogger {
-  private final BlockingQueue<String> buffer =  new LinkedBlockingQueue<>(1000);
-  private final Class<?> c;
+  private static final Integer BUFFER_SIZE = 1024;
+  private final BlockingQueue<String> buffer =  new LinkedBlockingQueue<>(BUFFER_SIZE);
+  private final Class<?> clazz;
 
-  public ZephyroLogger(Class<?> c) {
-    this.c = c;
+  private boolean isWarmUp = true;
+
+  public ZephyroLogger(Class<?> clazz) {
+    this.clazz = clazz;
+
     Thread thread = new Thread(() -> {
       try {
         while (!Thread.currentThread().isInterrupted()) {
           String log = buffer.take();
-          System.out.write((log + "\n").getBytes());
+          if (!isWarmUp) {
+            System.out.write((log + "\n").getBytes());
+          }
         }
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
         e.printStackTrace();
       } catch (IOException e) {
-        throw new RuntimeException(e);
+        e.printStackTrace();
       }
     });
-
     thread.setDaemon(true);
     thread.start();
   }
@@ -43,12 +48,23 @@ public class ZephyroLogger {
     }
   }
 
+  public void warmUp() {
+    isWarmUp = true;
+    for (int i = 0; i < 50; i++) {
+      enqueue(
+        getLogFormat("", LevelColor.GREEN, LogLevel.INFO)
+      );
+    }
+    buffer.clear();
+    isWarmUp = false;
+  }
+
   private String getLogFormat(String message, LevelColor color, LogLevel level) {
     return String.format(
       "%s[%s]%s %s%s%s : %s",
       color.getColor(), level,
       LevelColor.RESET.getColor(), LevelColor.WHITE.getColor(),
-      String.valueOf(c).split(" ")[1],
+      String.valueOf(clazz).split(" ")[1],
       LevelColor.RESET.getColor(),
       message
     );
