@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 public class TestService {
   private static final ZephyroLogger log = ZephyroLoggerFactory.getLogger(TestService.class);
 
-//  @ExecutionTimer
+  @ExecutionTimer
   public void testRunTimer() {
     long totalLogTime = 0;
     long totalSoutTime = 0;
 
     long start = System.nanoTime();
-    log.info("logging");
+    log.info("logging", true);
     long end = System.nanoTime();
     totalLogTime += (end - start);
 

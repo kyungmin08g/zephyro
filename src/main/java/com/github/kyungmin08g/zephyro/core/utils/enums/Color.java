@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum LevelColor {
+public enum Color {
 
   RESET("\u001B[0m"),
   RED("\u001B[31m"),

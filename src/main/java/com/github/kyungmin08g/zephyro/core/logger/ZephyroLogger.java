@@ -1,7 +1,7 @@
 package com.github.kyungmin08g.zephyro.core.logger;
 
 import com.github.kyungmin08g.zephyro.core.logger.event.ZephyroLogEvent;
-import com.github.kyungmin08g.zephyro.core.utils.enums.LevelColor;
+import com.github.kyungmin08g.zephyro.core.utils.enums.Color;
 import com.github.kyungmin08g.zephyro.core.utils.enums.LogLevel;
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.RingBuffer;
@@ -13,51 +13,89 @@ public class ZephyroLogger {
   private final EventFactory<ZephyroLogEvent> factory = ZephyroLogEvent::new;
   private final Disruptor<ZephyroLogEvent> handler = new Disruptor<>(factory, BUFFER_SIZE, Thread::new);
   private final RingBuffer<ZephyroLogEvent> buffer = handler.getRingBuffer();
-  private final Class<?> clazz;
 
-  public ZephyroLogger(Class<?> clazz) {
+  private final Class<?> clazz;
+  private final Color defaultColor;
+  private boolean isFormat;
+
+  public ZephyroLogger(Class<?> clazz, boolean isFormat) {
     this.clazz = clazz;
+    this.isFormat = isFormat;
+    this.defaultColor = Color.RESET;
     this.eventHandleRegister();
   }
 
-  public void info(Object message) {
-    callEvent(message, clazz, LogLevel.INFO, LevelColor.GREEN);
+  public void info(Object message, boolean isFormat) {
+    this.callEvent(message, this.clazz, LogLevel.INFO, Color.GREEN, this.defaultColor, isFormat);
   }
 
-  public void warn(Object message) {
-    callEvent(message, clazz, LogLevel.WARN, LevelColor.YELLOW);
+  public void info(Object message, boolean isFormat, Color defaultColor) {
+    this.callEvent(message, this.clazz, LogLevel.INFO, Color.GREEN, defaultColor, isFormat);
   }
 
-  public void debug(Object message) {
-    callEvent(message, clazz, LogLevel.DEBUG, LevelColor.MAGENTA);
+  public void warn(Object message, boolean isFormat) {
+    this.callEvent(message, this.clazz, LogLevel.WARN, Color.YELLOW, this.defaultColor, isFormat);
   }
 
-  public void error(Object message) {
-    callEvent(message, clazz, LogLevel.ERROR, LevelColor.RED);
+  public void warn(Object message, boolean isFormat, Color defaultColor) {
+    this.callEvent(message, this.clazz, LogLevel.WARN, Color.YELLOW, defaultColor, isFormat);
+  }
+
+  public void debug(Object message, boolean isFormat) {
+    this.callEvent(message, this.clazz, LogLevel.DEBUG, Color.MAGENTA, this.defaultColor, isFormat);
+  }
+
+  public void debug(Object message, boolean isFormat, Color defaultColor) {
+    this.callEvent(message, this.clazz, LogLevel.DEBUG, Color.MAGENTA, defaultColor, isFormat);
+  }
+
+  public void error(Object message, boolean isFormat) {
+    this.callEvent(message, this.clazz, LogLevel.ERROR, Color.RED, this.defaultColor, isFormat);
+  }
+
+  public void error(Object message, boolean isFormat, Color defaultColor) {
+    this.callEvent(message, this.clazz, LogLevel.ERROR, Color.RED, defaultColor, isFormat);
   }
 
   private void callEvent(
     Object message,
     Class<?> clazz,
     LogLevel level,
-    LevelColor color
+    Color color,
+    Color defaultColor,
+    boolean isLogFormat
   ) {
+    if (isLogFormat) {
+      if (!this.isFormat) {
+        this.isFormat = true;
+      }
+    } else {
+      this.isFormat = false;
+    }
+
     long sequence = this.buffer.next();
     try {
       ZephyroLogEvent event = this.buffer.get(sequence);
       event.setMessage(message);
       event.setLevel(level);
-      event.setLevelColor(color);
+      event.setColor(color);
       event.setClazz(clazz);
+      event.setDefaultColor(
+        (defaultColor == Color.RESET) ? this.defaultColor : defaultColor
+      );
     } finally {
       this.buffer.publish(sequence);
     }
   }
 
   private void eventHandleRegister() {
-    handler.handleEventsWith((event, sequence, endOfBatch) ->
-      System.out.write((event.getMessage() + "\n").getBytes())
-    );
-    handler.start();
+    this.handler.handleEventsWith((event, sequence, endOfBatch) -> {
+      if (this.isFormat) {
+        System.out.write((event.getFormatMessage() + "\n").getBytes());
+      } else {
+        System.out.write((event.getDefaultMessage() + "\n").getBytes());
+      }
+    });
+    this.handler.start();
   }
 }

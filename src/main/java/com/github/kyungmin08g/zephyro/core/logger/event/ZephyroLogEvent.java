@@ -1,7 +1,7 @@
 package com.github.kyungmin08g.zephyro.core.logger.event;
 
 import com.github.kyungmin08g.zephyro.core.utils.enums.LogLevel;
-import com.github.kyungmin08g.zephyro.core.utils.enums.LevelColor;
+import com.github.kyungmin08g.zephyro.core.utils.enums.Color;
 import lombok.*;
 
 import java.lang.management.ManagementFactory;
@@ -15,17 +15,22 @@ public class ZephyroLogEvent {
 
   private Object message;
   private Class<?> clazz;
-  private LevelColor levelColor;
+  private Color color;
   private LogLevel level;
+  private Color defaultColor;
 
-  public String getMessage() {
-    return getMessageFormat(message, clazz, levelColor, level);
+  public String getFormatMessage() {
+    return this.getMessageFormat(message, clazz, color, level);
+  }
+
+  public String getDefaultMessage() {
+    return this.getDefaultMessageFormat(message, color, level, defaultColor);
   }
 
   private String getMessageFormat(
     Object message,
     Class<?> clazz,
-    LevelColor color,
+    Color color,
     LogLevel level
   ) {
     String time = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
@@ -42,35 +47,39 @@ public class ZephyroLogEvent {
       + secondPackageDomain.charAt(0) + "."
       + packages.substring(firstPackageDomain.length() + secondPackageDomain.length() + 2);
 
-    Runtime runtime = Runtime.getRuntime();
-    long used = runtime.totalMemory() - runtime.freeMemory();
-    long usedMB = used / (1024 * 1024);
-    long total = runtime.totalMemory() / (1024 * 1024);
-    long max = runtime.maxMemory() / (1024 * 1024);
-    long uptimeMs = ManagementFactory.getRuntimeMXBean().getUptime();
-
     return String.format(
-      "%s%s%s | %s%s%s | PID:%s%s%s | STATUS:%sthread=%s, %s, %s, %s, %s%s | CLASS:%s%s%s ▶ %s",
+      "%s%s%s  %s%s%s %s%s%s --- [%s] %s%s%s : %s",
       time + offset,
       color.getCode(),
-      LevelColor.RESET.getCode(),
+      Color.RESET.getCode(),
       color.getCode(),
       level,
-      LevelColor.RESET.getCode(),
-      LevelColor.MAGENTA.getCode(),
+      Color.RESET.getCode(),
+      Color.MAGENTA.getCode(),
       jvmPip,
-      LevelColor.RESET.getCode(),
-      LevelColor.MAGENTA.getCode(),
+      Color.RESET.getCode(),
       threadName,
-      "maxHeap=" + max + "MB",
-      "allocatedHeap=" + total + "MB",
-      "usedHeap=" + usedMB + "MB",
-      "uptime=" + uptimeMs + "ms",
-      LevelColor.RESET.getCode(),
-      LevelColor.CYAN.getCode(),
+      Color.CYAN.getCode(),
       packageName,
-      LevelColor.RESET.getCode(),
+      Color.RESET.getCode(),
       message
+    );
+  }
+
+  private String getDefaultMessageFormat(
+    Object message,
+    Color color,
+    LogLevel level,
+    Color defaultColor
+  ) {
+    return String.format(
+      "[ %s%s%s ] ▶ %s%s%s",
+      color.getCode(),
+      level,
+      Color.RESET.getCode(),
+      defaultColor.getCode(),
+      message,
+      Color.RESET.getCode()
     );
   }
 }

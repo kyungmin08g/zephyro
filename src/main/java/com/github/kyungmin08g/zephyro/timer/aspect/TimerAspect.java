@@ -1,14 +1,16 @@
 package com.github.kyungmin08g.zephyro.timer.aspect;
 
-import lombok.extern.slf4j.Slf4j;
+import com.github.kyungmin08g.zephyro.core.logger.ZephyroLogger;
+import com.github.kyungmin08g.zephyro.core.logger.factory.ZephyroLoggerFactory;
+import com.github.kyungmin08g.zephyro.core.utils.enums.Color;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.util.StopWatch;
 
 @Aspect
-@Slf4j
 public class TimerAspect {
+  private static final ZephyroLogger log = ZephyroLoggerFactory.getLogger(TimerAspect.class);
   private static final StopWatch timer = new StopWatch();
 
   @Around("@annotation(com.github.kyungmin08g.zephyro.timer.annotation.ExecutionTimer)")
@@ -23,7 +25,7 @@ public class TimerAspect {
       String className = String.valueOf(process.getTarget().getClass())
         .split(" ")[1];
 
-      log.info("{} executed in {} seconds", className, time);
+      log.error(className + " 실행 시간: " + time + " second", false, Color.MAGENTA);
       return proceed;
     } catch (Throwable e) {
       throw new RuntimeException(e);

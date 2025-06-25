@@ -9,6 +9,6 @@ public class ZephyroLoggerFactory {
   private static final Map<Class<?>, ZephyroLogger> cache = new ConcurrentHashMap<>();
 
   public static ZephyroLogger getLogger(Class<?> clazz) {
-    return cache.computeIfAbsent(clazz, ZephyroLogger::new);
+    return cache.computeIfAbsent(clazz, c -> new ZephyroLogger(clazz, true));
   }
 }
