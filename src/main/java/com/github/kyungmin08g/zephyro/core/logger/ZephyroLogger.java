@@ -2,19 +2,17 @@ package com.github.kyungmin08g.zephyro.core.logger;
 
 import com.github.kyungmin08g.zephyro.core.logger.event.ZephyroLogEvent;
 import com.github.kyungmin08g.zephyro.core.utils.enums.LevelColor;
-import com.github.kyungmin08g.zephyro.core.utils.enums.Level;
+import com.github.kyungmin08g.zephyro.core.utils.enums.LogLevel;
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
-
-import java.util.concurrent.*;
 
 public class ZephyroLogger {
   private static final Integer BUFFER_SIZE = 1024;
 
   private final EventFactory<ZephyroLogEvent> factory = ZephyroLogEvent::new;
-  private final Disruptor<ZephyroLogEvent> disruptor = new Disruptor<>(factory, BUFFER_SIZE, Executors.defaultThreadFactory());
-  private final RingBuffer<ZephyroLogEvent> ringBuffer = disruptor.getRingBuffer();
+  private final Disruptor<ZephyroLogEvent> handler = new Disruptor<>(factory, BUFFER_SIZE, Thread::new);
+  private final RingBuffer<ZephyroLogEvent> buffer = handler.getRingBuffer();
   private final Class<?> clazz;
 
   public ZephyroLogger(Class<?> clazz) {
@@ -22,23 +20,44 @@ public class ZephyroLogger {
     this.eventHandleRegister();
   }
 
-  private void eventHandleRegister() {
-    disruptor.handleEventsWith((event, sequence, endOfBatch) -> {
-      System.out.write((event.getMessage() + "\n").getBytes());
-    });
-    disruptor.start();
+  public void info(Object message) {
+    callEvent(message, clazz, LogLevel.INFO, LevelColor.GREEN);
   }
 
-  public void log(String message) {
-    long seq = ringBuffer.next();
+  public void warn(Object message) {
+    callEvent(message, clazz, LogLevel.WARN, LevelColor.YELLOW);
+  }
+
+  public void debug(Object message) {
+    callEvent(message, clazz, LogLevel.DEBUG, LevelColor.MAGENTA);
+  }
+
+  public void error(Object message) {
+    callEvent(message, clazz, LogLevel.ERROR, LevelColor.RED);
+  }
+
+  private void callEvent(
+    Object message,
+    Class<?> clazz,
+    LogLevel level,
+    LevelColor color
+  ) {
+    long sequence = this.buffer.next();
     try {
-      ZephyroLogEvent event = ringBuffer.get(seq);
+      ZephyroLogEvent event = this.buffer.get(sequence);
       event.setMessage(message);
-      event.setLevelColor(LevelColor.GREEN);
-      event.setLevel(Level.INFO);
+      event.setLevel(level);
+      event.setLevelColor(color);
       event.setClazz(clazz);
     } finally {
-      ringBuffer.publish(seq);
+      this.buffer.publish(sequence);
     }
+  }
+
+  private void eventHandleRegister() {
+    handler.handleEventsWith((event, sequence, endOfBatch) ->
+      System.out.write((event.getMessage() + "\n").getBytes())
+    );
+    handler.start();
   }
 }

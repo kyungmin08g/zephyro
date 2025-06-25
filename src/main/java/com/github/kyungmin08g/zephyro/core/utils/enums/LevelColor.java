@@ -16,5 +16,5 @@ public enum LevelColor {
   CYAN("\u001B[36m"),
   WHITE("\u001B[37m");
 
-  private final String color;
+  private final String code;
 }

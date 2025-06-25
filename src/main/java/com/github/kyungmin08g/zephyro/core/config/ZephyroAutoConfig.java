@@ -1,7 +1,6 @@
 package com.github.kyungmin08g.zephyro.core.config;
 
 import com.github.kyungmin08g.zephyro.timer.aspect.TimerAspect;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 public class ZephyroAutoConfig {
 
   @Bean
-  @ConditionalOnMissingBean
   public TimerAspect timerAspect() {
     return new TimerAspect();
   }

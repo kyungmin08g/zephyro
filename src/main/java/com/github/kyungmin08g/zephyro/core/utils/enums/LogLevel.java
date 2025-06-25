@@ -5,12 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Level {
-
-  INFO("info"),
-  ERROR("error"),
-  WARN("warn"),
-  DEBUG("debug");
-
-  private final String value;
+public enum LogLevel {
+  INFO, ERROR, WARN, DEBUG
 }

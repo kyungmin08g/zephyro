@@ -9,7 +9,7 @@ import org.springframework.util.StopWatch;
 @Aspect
 @Slf4j
 public class TimerAspect {
-  private final StopWatch timer = new StopWatch();
+  private static final StopWatch timer = new StopWatch();
 
   @Around("@annotation(com.github.kyungmin08g.zephyro.timer.annotation.ExecutionTimer)")
   public Object runTimer(ProceedingJoinPoint process) {
@@ -20,7 +20,6 @@ public class TimerAspect {
 
       String timeSecond = String.valueOf(timer.getTotalTimeSeconds());
       String time = timeSecond.split("\\.")[0] + timeSecond.substring(1, 5);
-
       String className = String.valueOf(process.getTarget().getClass())
         .split(" ")[1];
 

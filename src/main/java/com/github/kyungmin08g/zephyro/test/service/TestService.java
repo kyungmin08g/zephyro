@@ -17,16 +17,16 @@ public class TestService {
     long totalSoutTime = 0;
 
     long start = System.nanoTime();
-    log.log("ZephyroLogger");
+    log.info("logging");
     long end = System.nanoTime();
     totalLogTime += (end - start);
 
     start = System.nanoTime();
-    System.out.println("System.out.println");
+    System.out.println("println");
     end = System.nanoTime();
     totalSoutTime += (end - start);
 
-    System.out.println("logging: " + (totalLogTime) + "ns");
-    System.out.println("println: " + (totalSoutTime) + "ns");
+    System.out.println("logging -> " + (totalLogTime) + "ns");
+    System.out.println("println -> " + (totalSoutTime) + "ns");
   }
 }
