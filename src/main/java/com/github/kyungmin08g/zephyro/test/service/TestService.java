@@ -17,7 +17,7 @@ public class TestService {
     long totalSoutTime = 0;
 
     long start = System.nanoTime();
-    log.info("logging", true);
+    log.info("logging");
     long end = System.nanoTime();
     totalLogTime += (end - start);
 

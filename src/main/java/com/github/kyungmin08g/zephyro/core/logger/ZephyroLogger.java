@@ -25,38 +25,6 @@ public class ZephyroLogger {
     this.eventHandleRegister();
   }
 
-  public void info(Object message, boolean isFormat) {
-    this.callEvent(message, this.clazz, LogLevel.INFO, Color.GREEN, this.defaultColor, isFormat);
-  }
-
-  public void info(Object message, boolean isFormat, Color defaultColor) {
-    this.callEvent(message, this.clazz, LogLevel.INFO, Color.GREEN, defaultColor, isFormat);
-  }
-
-  public void warn(Object message, boolean isFormat) {
-    this.callEvent(message, this.clazz, LogLevel.WARN, Color.YELLOW, this.defaultColor, isFormat);
-  }
-
-  public void warn(Object message, boolean isFormat, Color defaultColor) {
-    this.callEvent(message, this.clazz, LogLevel.WARN, Color.YELLOW, defaultColor, isFormat);
-  }
-
-  public void debug(Object message, boolean isFormat) {
-    this.callEvent(message, this.clazz, LogLevel.DEBUG, Color.MAGENTA, this.defaultColor, isFormat);
-  }
-
-  public void debug(Object message, boolean isFormat, Color defaultColor) {
-    this.callEvent(message, this.clazz, LogLevel.DEBUG, Color.MAGENTA, defaultColor, isFormat);
-  }
-
-  public void error(Object message, boolean isFormat) {
-    this.callEvent(message, this.clazz, LogLevel.ERROR, Color.RED, this.defaultColor, isFormat);
-  }
-
-  public void error(Object message, boolean isFormat, Color defaultColor) {
-    this.callEvent(message, this.clazz, LogLevel.ERROR, Color.RED, defaultColor, isFormat);
-  }
-
   private void callEvent(
     Object message,
     Class<?> clazz,
@@ -97,5 +65,53 @@ public class ZephyroLogger {
       }
     });
     this.handler.start();
+  }
+
+  public void info(Object message) {
+    this.callEvent(message, this.clazz, LogLevel.INFO, Color.GREEN, this.defaultColor, true);
+  }
+
+  public void info(Object message, boolean isFormat) {
+    this.callEvent(message, this.clazz, LogLevel.INFO, Color.GREEN, this.defaultColor, isFormat);
+  }
+
+  public void info(Object message, boolean isFormat, Color defaultColor) {
+    this.callEvent(message, this.clazz, LogLevel.INFO, Color.GREEN, defaultColor, isFormat);
+  }
+
+  public void warn(Object message) {
+    this.callEvent(message, this.clazz, LogLevel.WARN, Color.YELLOW, this.defaultColor, true);
+  }
+
+  public void warn(Object message, boolean isFormat) {
+    this.callEvent(message, this.clazz, LogLevel.WARN, Color.YELLOW, this.defaultColor, isFormat);
+  }
+
+  public void warn(Object message, boolean isFormat, Color defaultColor) {
+    this.callEvent(message, this.clazz, LogLevel.WARN, Color.YELLOW, defaultColor, isFormat);
+  }
+
+  public void debug(Object message) {
+    this.callEvent(message, this.clazz, LogLevel.DEBUG, Color.MAGENTA, this.defaultColor, true);
+  }
+
+  public void debug(Object message, boolean isFormat) {
+    this.callEvent(message, this.clazz, LogLevel.DEBUG, Color.MAGENTA, this.defaultColor, isFormat);
+  }
+
+  public void debug(Object message, boolean isFormat, Color defaultColor) {
+    this.callEvent(message, this.clazz, LogLevel.DEBUG, Color.MAGENTA, defaultColor, isFormat);
+  }
+
+  public void error(Object message) {
+    this.callEvent(message, this.clazz, LogLevel.ERROR, Color.RED, this.defaultColor, true);
+  }
+
+  public void error(Object message, boolean isFormat) {
+    this.callEvent(message, this.clazz, LogLevel.ERROR, Color.RED, this.defaultColor, isFormat);
+  }
+
+  public void error(Object message, boolean isFormat, Color defaultColor) {
+    this.callEvent(message, this.clazz, LogLevel.ERROR, Color.RED, defaultColor, isFormat);
   }
 }
