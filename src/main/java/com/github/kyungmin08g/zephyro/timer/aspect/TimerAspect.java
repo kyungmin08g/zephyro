@@ -50,9 +50,11 @@ public class TimerAspect {
   @Around("@annotation(com.github.kyungmin08g.zephyro.timer.annotation.PerfTracker)")
   public Object performanceLog(ProceedingJoinPoint process) {
     try {
+      long startSecond = System.currentTimeMillis();
       long startNano = System.nanoTime();
       Object proceed = process.proceed();
       long endNano = System.nanoTime();
+      long endSecond = System.currentTimeMillis();
 
       // 메서드 레벨에서 @Profiled 어노테이션의 color 필드 구하기
       MethodSignature methodSignature = (MethodSignature) process.getSignature();
@@ -60,7 +62,7 @@ public class TimerAspect {
       PerfTracker profiled = method.getAnnotation(PerfTracker.class);
 
       log.info(
-        getProfiledMessageFormat(process, startNano, endNano),
+        getProfiledMessageFormat(process, startNano, endNano, startSecond, endSecond),
         false,
         profiled.color()
       );
@@ -72,9 +74,7 @@ public class TimerAspect {
 
   private String getExecutionTimeMessageFormat(ProceedingJoinPoint process, long startSecond, long endSecond) {
     // 해당 메서드 실행 시간 구하기
-    String elapsedSecond = String.valueOf((endSecond - startSecond) / 1000.0); // 밀리초를 초로 변환
-    String elapsedTime = elapsedSecond.split("\\.")[0] + "."
-      + elapsedSecond.split("\\.")[1];
+    String elapsedSecond = String.valueOf((endSecond - startSecond) / 1000.0); // 밀리초(ms) -> 초(s)로 변환
 
     // 클래스와 메서드 이름 구하기
     String className = process.getTarget().getClass().getSimpleName();
@@ -82,19 +82,23 @@ public class TimerAspect {
 
     return String.format(
       "%s#%s() 메서드 실행 시간: %s초",
-      className, methodName, elapsedTime
+      className, methodName, elapsedSecond
     );
   }
 
-  private String getProfiledMessageFormat(ProceedingJoinPoint process, long startNano, long endNano) {
+  private String getProfiledMessageFormat(
+    ProceedingJoinPoint process,
+    long startNano,
+    long endNano,
+    long stratSecond,
+    long endSecond
+  ) {
     // 나노초 구하기
     long nano = (endNano - startNano);
     String elapsedNano = NumberFormat.getInstance().format(nano);
 
     // 초 구하기
-    String elapsedSecond = String.valueOf(nano / 1_000_000_000.0); // 나노초를 초로 변환
-    String elapsedTime = elapsedSecond.split("\\.")[0] + "."
-      + elapsedSecond.split("\\.")[1].substring(0, 3); // elapsedSecond가 길게 나와서 소수점 3번째 자리까지 가공
+    String elapsedSecond = String.valueOf((endSecond - stratSecond) / 1000.0);
 
     // 클래스외 메서드 이름 구하기
     String className = String.valueOf(process.getTarget().getClass()).split(" ")[1];
@@ -173,7 +177,7 @@ public class TimerAspect {
       totalHeapMemory,
       usedHeapMemory,
       (uptimeMs + "s"),
-      (elapsedTime + "s"),
+      (elapsedSecond + "s"),
       (elapsedNano + "ns"),
       gcCount, gcTime,
       NumberFormat.getInstance().format(loadedClasses),

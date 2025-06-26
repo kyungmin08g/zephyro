@@ -17,7 +17,7 @@ public class TestService {
   @MethodTimeTracker
   public void testRunTimer() {
     try {
-      Thread.sleep(10000);
+//      Thread.sleep(10000);
       long totalLogTime = 0;
       long totalSoutTime = 0;
 
