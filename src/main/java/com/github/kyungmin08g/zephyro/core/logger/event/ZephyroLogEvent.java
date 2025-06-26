@@ -72,8 +72,13 @@ public class ZephyroLogEvent {
     LogLevel level,
     Color defaultColor
   ) {
+    String time = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+    ZonedDateTime now = ZonedDateTime.now();
+    String offset = now.getOffset().getId();
+
     return String.format(
-      "[ %s%s%s ] ▶ %s%s%s",
+      "%s  %s%s%s ▶ %s%s%s",
+      time + offset,
       color.getCode(),
       level,
       Color.RESET.getCode(),

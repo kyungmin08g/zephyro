@@ -31,7 +31,7 @@ public class TimerAspect {
       Object proceed = process.proceed();
       long endSecond = System.currentTimeMillis();
 
-      // 메서드 레벨에서 @ExecutionTimer 어노테이션의 color 필드 구하기
+      // 메서드 레벨에서 @MethodTimeTracker 어노테이션의 color 필드 구하기
       MethodSignature methodSignature = (MethodSignature) process.getSignature();
       Method method = methodSignature.getMethod();
       MethodTimeTracker executionTimer = method.getAnnotation(MethodTimeTracker.class);
