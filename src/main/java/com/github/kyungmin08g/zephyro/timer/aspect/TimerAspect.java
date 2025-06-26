@@ -73,8 +73,8 @@ public class TimerAspect {
   private String getExecutionTimeMessageFormat(ProceedingJoinPoint process, long startSecond, long endSecond) {
     // 해당 메서드 실행 시간 구하기
     String elapsedSecond = String.valueOf((endSecond - startSecond) / 1000.0); // 밀리초를 초로 변환
-    String elapsedTime = elapsedSecond.charAt(0) + "."
-      + elapsedSecond.split("\\.")[1].substring(0, 3);
+    String elapsedTime = elapsedSecond.split("\\.")[0] + "."
+      + elapsedSecond.split("\\.")[1];
 
     // 클래스와 메서드 이름 구하기
     String className = process.getTarget().getClass().getSimpleName();
@@ -93,7 +93,7 @@ public class TimerAspect {
 
     // 초 구하기
     String elapsedSecond = String.valueOf(nano / 1_000_000_000.0); // 나노초를 초로 변환
-    String elapsedTime = elapsedSecond.charAt(0) + "."
+    String elapsedTime = elapsedSecond.split("\\.")[0] + "."
       + elapsedSecond.split("\\.")[1].substring(0, 3); // elapsedSecond가 길게 나와서 소수점 3번째 자리까지 가공
 
     // 클래스외 메서드 이름 구하기

@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 public class TestService {
   private static final ZephyroLogger log = ZephyroLoggerFactory.getLogger(TestService.class);
 
-  @PerfTracker(color = Color.GREEN)
+  @PerfTracker
   @MethodTimeTracker
   public void testRunTimer() {
     try {
-      Thread.sleep(4000);
+      Thread.sleep(10000);
       long totalLogTime = 0;
       long totalSoutTime = 0;
 
