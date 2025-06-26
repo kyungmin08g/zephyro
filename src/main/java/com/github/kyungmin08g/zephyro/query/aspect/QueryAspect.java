@@ -12,9 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Aspect
-@RequiredArgsConstructor
 public class QueryAspect {
-  private final QueryLogInterceptor queryLogInterceptor;
 
   @Around("@annotation(com.github.kyungmin08g.zephyro.query.annotation.QuerySpy)")
   public Object registerQueryInterceptorBean(ProceedingJoinPoint process) {
@@ -22,7 +20,7 @@ public class QueryAspect {
       HibernatePropertiesCustomizer proceed = (HibernatePropertiesCustomizer) process.proceed();
 
       Map<String, Object> hibernateProperties= new HashMap<>();
-      hibernateProperties.put(null, null);
+//      hibernateProperties.put(AvailableSettings.STATEMENT_INSPECTOR, null);
       proceed.customize(hibernateProperties);
 
       System.out.println(proceed);

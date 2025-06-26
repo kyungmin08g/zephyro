@@ -8,9 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@RequiredArgsConstructor
 public class ZephyroAutoConfig {
-  private final QueryLogInterceptor queryLogInterceptor;
 
   @Bean
   public TimerAspect timerAspect() {
@@ -19,11 +17,11 @@ public class ZephyroAutoConfig {
 
   @Bean
   public QueryAspect queryAspect() {
-    return new QueryAspect(queryLogInterceptor);
+    return new QueryAspect();
   }
 
-//  @Bean
-//  public QueryLogInterceptor queryLogInterceptor() {
-//    return new QueryLogInterceptor();
-//  }
+  @Bean
+  public QueryLogInterceptor queryLogInterceptor() {
+    return new QueryLogInterceptor();
+  }
 }
