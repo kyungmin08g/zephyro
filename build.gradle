@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.github.kyungmin08g'
-version = '0.0.13-TEST'
+version = '0.0.14-TEST'
 
 java {
     withSourcesJar()
