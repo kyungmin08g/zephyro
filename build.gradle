@@ -28,6 +28,7 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web:3.5.3'
     implementation 'org.springframework.boot:spring-boot-starter-aop:3.5.3'
+    implementation 'org.hibernate:hibernate-core:7.0.3.Final'
     implementation 'com.lmax:disruptor:4.0.0'
     compileOnly 'org.projectlombok:lombok:1.18.32'
     annotationProcessor 'org.projectlombok:lombok:1.18.32'
