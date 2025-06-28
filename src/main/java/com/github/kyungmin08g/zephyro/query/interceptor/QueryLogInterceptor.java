@@ -34,7 +34,7 @@ public class QueryLogInterceptor implements StatementInspector {
       .replace(",", ", "); // m1_0, te1_0, n1_0 등
 
     for (SqlKeyword keyword : SqlKeyword.values()) {
-      aQuery = aQuery.replace(keyword.name().toLowerCase(), keyword.name()); // SQL 특정 키워드를 대문자로 변환
+      aQuery = aQuery.replaceAll(" ?" + keyword.name().toLowerCase() + " ", " " + keyword.name() + " "); // SQL 특정 키워드를 대문자로 변환
     }
 
     return String.format(aQuery);
