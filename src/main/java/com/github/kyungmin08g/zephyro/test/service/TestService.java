@@ -3,6 +3,8 @@ package com.github.kyungmin08g.zephyro.test.service;
 import com.github.kyungmin08g.zephyro.core.logger.ZephyroLogger;
 import com.github.kyungmin08g.zephyro.core.logger.factory.ZephyroLoggerFactory;
 import com.github.kyungmin08g.zephyro.core.utils.enums.Color;
+import com.github.kyungmin08g.zephyro.test.domain.TestEntity;
+import com.github.kyungmin08g.zephyro.test.repository.TestRepository;
 import com.github.kyungmin08g.zephyro.timer.annotation.MethodTimeTracker;
 import com.github.kyungmin08g.zephyro.timer.annotation.PerfTracker;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TestService {
   private static final ZephyroLogger log = ZephyroLoggerFactory.getLogger(TestService.class);
+  private final TestRepository testRepository;
 
   @PerfTracker
   @MethodTimeTracker
@@ -36,5 +39,18 @@ public class TestService {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public void createTest() {
+    testRepository.save(
+      TestEntity.builder()
+        .title("제목1")
+        .content("내용1")
+        .build()
+    );
+  }
+
+  public TestEntity getTestById(String id) {
+    return testRepository.findById(Long.valueOf(id)).get();
   }
 }
