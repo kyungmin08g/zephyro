@@ -2,17 +2,15 @@ package com.github.kyungmin08g.zephyro.query.interceptor;
 
 import com.github.kyungmin08g.zephyro.core.logger.ZephyroLogger;
 import com.github.kyungmin08g.zephyro.core.logger.factory.ZephyroLoggerFactory;
+import com.github.kyungmin08g.zephyro.core.utils.enums.Color;
 import com.github.kyungmin08g.zephyro.query.enums.SqlKeyword;
 import org.hibernate.resource.jdbc.spi.StatementInspector;
-
-import java.util.stream.Stream;
 
 public class QueryLogInterceptor implements StatementInspector {
   private static final ZephyroLogger log = ZephyroLoggerFactory.getLogger(QueryLogInterceptor.class);
 
   @Override
   public String inspect(String query) {
-    System.out.println(query);
     log.info(getMessageFormat(query), false);
     return query;
   }
@@ -31,10 +29,11 @@ public class QueryLogInterceptor implements StatementInspector {
    */
   private String getMessageFormat(String query) {
     String aQuery = query.replaceAll("[a-z]*?[0-9]_[0-9].", "")
+      .replace("=", Color.BLUE.getCode() + " = " + Color.RESET.getCode())
       .replace(",", ", "); // m1_0, te1_0, n1_0 등
 
     for (SqlKeyword keyword : SqlKeyword.values()) {
-      aQuery = aQuery.replaceAll(" ?" + keyword.name().toLowerCase() + " ", " " + keyword.name() + " "); // SQL 특정 키워드를 대문자로 변환
+      aQuery = aQuery.replaceAll(" ?" + keyword.name().toLowerCase() + " ", " " + Color.YELLOW.getCode() + keyword.name() + Color.RESET.getCode() + " "); // SQL 특정 키워드를 대문자로 변환
     }
 
     return String.format(aQuery);
