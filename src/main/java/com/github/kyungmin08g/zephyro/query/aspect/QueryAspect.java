@@ -18,13 +18,8 @@ public class QueryAspect {
   @Autowired
   private HttpServletRequest request;
 
-  @Before(
-    "@within(com.github.kyungmin08g.zephyro.query.annotation.MonitorTarget)" +
-    "@annotation(org.springframework.web.bind.annotation.*)"
-  )
+  @Before("@within(com.github.kyungmin08g.zephyro.query.annotation.MonitorTarget)")
   public void addQueryLogParameters(@NonNull JoinPoint process) {
-    System.out.println("들어옴");
-
     String time = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     String className = process.getTarget().getClass().getName();
     String methodName = process.getSignature().getName();
@@ -34,8 +29,6 @@ public class QueryAspect {
     MDC.put("method", methodName);
     MDC.put("env", getUserEnvironment(request));
     MDC.put("ip", getClientIp(request));
-
-    System.out.println(MDC.get("class"));
   }
 
   private String getUserEnvironment(HttpServletRequest request) {

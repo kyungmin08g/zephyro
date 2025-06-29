@@ -29,9 +29,10 @@ public class QueryLogInterceptor implements StatementInspector {
     update notice set content=?,member_id=?,thumbnail_url=?,title=?,updated_at=? where id=?
    */
   private String getMessageFormat(String query, String time, String ip, String clazz, String method, String env) {
-    String resQuery = query.replaceAll("[a-z]*?[0-9]_[0-9].", "")
-      .replace("=", Color.BLUE.getCode() + " = " + Color.RESET.getCode())
-      .replace(",", ", "); // m1_0, te1_0, n1_0 등
+    String resQuery = query;
+//    String resQuery = query.replaceAll("[a-z]*?[0-9]_[0-9].", "")
+//      .replace("=", Color.BLUE.getCode() + " = " + Color.RESET.getCode())
+//      .replace(",", ", "); // m1_0, te1_0, n1_0 등
 
     // SQL 특정 키워드를 대문자로 변환
     for (SQLKeyword keyword : SQLKeyword.values()) {
