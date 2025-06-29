@@ -9,6 +9,10 @@ import com.github.kyungmin08g.zephyro.timer.annotation.PerformanceTracker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/**
+ * 라이브러리 테스트에 사용될 Service
+ */
+
 @Service
 @RequiredArgsConstructor
 public class TestService {

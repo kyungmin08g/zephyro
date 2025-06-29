@@ -18,6 +18,9 @@ import java.text.NumberFormat;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * TimerAspect : 시간과 관련된 모든 AOP가 구현된 곳
+ */
 @Aspect
 public class TimerAspect {
   private static final ZephyroLogger log = ZephyroLoggerFactory.getLogger(TimerAspect.class);
@@ -26,6 +29,11 @@ public class TimerAspect {
   private static final ClassLoadingMXBean classLoadingBean = ManagementFactory.getClassLoadingMXBean();
   private static final Runtime runtime = Runtime.getRuntime();
 
+  /**
+   * MethodTimeTracker 어노테이션이 호출될때 동작하는 실행 시간 측정 AOP 메서드
+   * @param process : 메서드 프로세스
+   * @return : 포맷된 실행된 시간 측정 로그 반환
+   */
   @Around("@annotation(com.github.kyungmin08g.zephyro.timer.annotation.MethodTimeTracker)")
   public Object executionTimeLog(ProceedingJoinPoint process) {
     try {
@@ -36,6 +44,8 @@ public class TimerAspect {
       // 메서드 레벨에서 @MethodTimeTracker 어노테이션의 color 필드 구하기
       MethodSignature methodSignature = (MethodSignature) process.getSignature();
       Method method = methodSignature.getMethod();
+
+      // 해당 메서드의 어노테이션 가져오기
       MethodTimeTracker executionTimer = method.getAnnotation(MethodTimeTracker.class);
 
       log.info(
@@ -49,6 +59,11 @@ public class TimerAspect {
     }
   }
 
+  /**
+   * PerformanceTracker 어노테이션이 호출될때 동작하는 성능 측정 AOP 메서드
+   * @param process : 메서드 프로세스s
+   * @return : 포맷된 성능 측정 로그 반환
+   */
   @Around("@annotation(com.github.kyungmin08g.zephyro.timer.annotation.PerformanceTracker)")
   public Object performanceLog(ProceedingJoinPoint process) {
     try {
@@ -61,6 +76,8 @@ public class TimerAspect {
       // 메서드 레벨에서 @PerformanceTracker 어노테이션의 color 필드 구하기
       MethodSignature methodSignature = (MethodSignature) process.getSignature();
       Method method = methodSignature.getMethod();
+
+      // 해당 메서드의 어노테이션 가져오기
       PerformanceTracker profiled = method.getAnnotation(PerformanceTracker.class);
 
       log.info(
@@ -74,6 +91,13 @@ public class TimerAspect {
     }
   }
 
+  /**
+   * 해당 메서드의 실행된 시간 구하고 포맷된 로그를 반환하는 메서드
+   * @param process : 메서드 프로세스
+   * @param startSecond : 최초 시작 시간
+   * @param endSecond : 종료 시간
+   * @return : 포맷된 로그 반환
+   */
   private String getExecutionTimeMessageFormat(ProceedingJoinPoint process, long startSecond, long endSecond) {
     String time = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
 
@@ -90,13 +114,16 @@ public class TimerAspect {
     );
   }
 
-  private String getProfiledMessageFormat(
-    ProceedingJoinPoint process,
-    long startNano,
-    long endNano,
-    long stratSecond,
-    long endSecond
-  ) {
+  /**
+   * 해당 메서드의 성능을 측정하고 포맷된 로그를 반환하는 메서드
+   * @param process : 메서드 프로세스
+   * @param startNano : 시작 나노초(ns)
+   * @param endNano : 종료 나노초(ns)
+   * @param stratSecond : 시작 초(s)
+   * @param endSecond : 종료 초(s)
+   * @return : 포맷된 로그 반환
+   */
+  private String getProfiledMessageFormat(ProceedingJoinPoint process, long startNano, long endNano, long stratSecond, long endSecond) {
     String time = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
 
     // 나노초 구하기

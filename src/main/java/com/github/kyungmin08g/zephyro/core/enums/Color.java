@@ -3,6 +3,9 @@ package com.github.kyungmin08g.zephyro.core.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * 로그 레벨 색상
+ */
 @Getter
 @AllArgsConstructor
 public enum Color {

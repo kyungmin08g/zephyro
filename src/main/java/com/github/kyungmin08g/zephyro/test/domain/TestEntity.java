@@ -7,6 +7,10 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
+/**
+ * 라이브러리 테스트에 사용될 Entity
+ */
+
 @Entity
 @Table(name = "test")
 @AllArgsConstructor

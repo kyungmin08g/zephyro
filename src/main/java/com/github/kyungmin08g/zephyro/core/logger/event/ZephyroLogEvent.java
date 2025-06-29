@@ -27,6 +27,14 @@ public class ZephyroLogEvent {
     return this.getDefaultMessageFormat(message, color, level, defaultColor);
   }
 
+  /**
+   * 포맷된 로그를 반환하는 메서드
+   * @param message : 사용자가 보낸 문자열 로그
+   * @param clazz : 호출한 클래스 경로
+   * @param color : 레벨 색상
+   * @param level : 로그 레벨
+   * @return : 커스텀으로 포맷된 로그 반환
+   */
   private String getMessageFormat(
     Object message,
     Class<?> clazz,
@@ -66,6 +74,14 @@ public class ZephyroLogEvent {
     );
   }
 
+  /**
+   * 기본 로그 형식을 포맷하는 메서드
+   * @param message : 사용자가 보낸 문자열 로그
+   * @param color : 레벨 색상
+   * @param level : 로그 레벨
+   * @param defaultColor : 로그 기본 색상
+   * @return : 포맷된 기본 로그 형식을 반환
+   */
   private String getDefaultMessageFormat(
     Object message,
     Color color,

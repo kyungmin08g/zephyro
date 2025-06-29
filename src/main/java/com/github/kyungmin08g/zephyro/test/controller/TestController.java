@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * TestController : 라이브러리 테스트를 위한 Controller
+ */
+
 @RestController
 @RequestMapping(value = "/test")
 @RequiredArgsConstructor
