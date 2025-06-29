@@ -18,6 +18,7 @@ public class QueryAspect {
   private final HttpServletRequest request;
 
   @Before(
+    "@annotation(com.github.kyungmin08g.zephyro.query.annotation.MonitorTarget)" +
     "@annotation(org.springframework.web.bind.annotation.GetMapping) || " +
     "@annotation(org.springframework.web.bind.annotation.PutMapping) || " +
     "@annotation(org.springframework.web.bind.annotation.PostMapping) || " +
