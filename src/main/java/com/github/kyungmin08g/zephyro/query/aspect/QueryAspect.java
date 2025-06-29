@@ -2,6 +2,7 @@ package com.github.kyungmin08g.zephyro.query.aspect;
 
 import com.github.kyungmin08g.zephyro.query.enums.ClientEnvironment;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -23,7 +24,9 @@ public class QueryAspect {
     "@annotation(org.springframework.web.bind.annotation.PatchMapping) || " +
     "@annotation(org.springframework.web.bind.annotation.DeleteMapping)"
   )
-  public void test(JoinPoint process) {
+  public void addQueryLogParameters(@NonNull JoinPoint process) {
+    System.out.println("들어옴");
+
     String time = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     String className = process.getTarget().getClass().getName();
     String methodName = process.getSignature().getName();
@@ -33,6 +36,8 @@ public class QueryAspect {
     MDC.put("method", methodName);
     MDC.put("env", getUserEnvironment(request));
     MDC.put("ip", getClientIp(request));
+
+    System.out.println(MDC.get("class"));
   }
 
   private String getUserEnvironment(HttpServletRequest request) {
