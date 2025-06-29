@@ -3,31 +3,24 @@ package com.github.kyungmin08g.zephyro.query.aspect;
 import com.github.kyungmin08g.zephyro.query.enums.ClientEnvironment;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Aspect
-@RequiredArgsConstructor
 public class QueryAspect {
-  private final HttpServletRequest request;
 
-  @Before(
-    "@annotation(org.springframework.web.bind.annotation.GetMapping) || " +
-    "@annotation(org.springframework.web.bind.annotation.PutMapping) || " +
-    "@annotation(org.springframework.web.bind.annotation.PostMapping) || " +
-    "@annotation(org.springframework.web.bind.annotation.PatchMapping) || " +
-    "@annotation(org.springframework.web.bind.annotation.DeleteMapping)"
-  )
+  @Autowired
+  private HttpServletRequest request;
+
+  @Before("@within(com.github.kyungmin08g.zephyro.query.annotation.QueryLogTarget)")
   public void addQueryLogParameters(@NonNull JoinPoint process) {
-    System.out.println("들어옴");
-
-    String time = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    String time = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
     String className = process.getTarget().getClass().getName();
     String methodName = process.getSignature().getName();
 
@@ -36,8 +29,6 @@ public class QueryAspect {
     MDC.put("method", methodName);
     MDC.put("env", getUserEnvironment(request));
     MDC.put("ip", getClientIp(request));
-
-    System.out.println(MDC.get("class"));
   }
 
   private String getUserEnvironment(HttpServletRequest request) {

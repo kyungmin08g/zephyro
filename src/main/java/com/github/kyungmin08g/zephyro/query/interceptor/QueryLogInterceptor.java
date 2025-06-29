@@ -29,15 +29,7 @@ public class QueryLogInterceptor implements StatementInspector {
     update notice set content=?,member_id=?,thumbnail_url=?,title=?,updated_at=? where id=?
    */
   private String getMessageFormat(String query, String time, String ip, String clazz, String method, String env) {
-    String resQuery = query.replaceAll("[a-z]*?[0-9]_[0-9].", "")
-      .replace("=", Color.BLUE.getCode() + " = " + Color.RESET.getCode())
-      .replace(",", ", "); // m1_0, te1_0, n1_0 등
-
-    // SQL 특정 키워드를 대문자로 변환
-    for (SQLKeyword keyword : SQLKeyword.values()) {
-      resQuery = resQuery.replaceAll(" ?" + keyword.name().toLowerCase() + " ", " " + Color.BLUE.getCode() + keyword.name() + Color.RESET.getCode() + " ");
-    }
-    resQuery = resQuery + ";";
+    String resQuery = this.getQueryFormat(query);
 
     String firstPackageDomain = clazz.split("\\.")[0];
     String secondPackageDomain = clazz.split("\\.")[1];
@@ -50,5 +42,20 @@ public class QueryLogInterceptor implements StatementInspector {
       time, ip, env, packageName + "#" + method + "()",
       resQuery.substring(1)
     );
+  }
+
+  private String getQueryFormat(String query) {
+    String resQuery = query.replaceAll("[a-z]*?[0-9]_[0-9].", "")
+      .replace("=", Color.BLUE.getCode() + " = " + Color.RESET.getCode())
+      .replace(",", ", "); // m1_0, te1_0, n1_0 등
+
+    // SQL 특정 키워드를 대문자로 변환
+    for (SQLKeyword keyword : SQLKeyword.values()) {
+      resQuery = resQuery.replaceAll(" ?" + keyword.name().toLowerCase() + " ", " " + Color.BLUE.getCode() + keyword.name() + Color.RESET.getCode() + " ");
+    }
+    resQuery = resQuery + ";";
+    resQuery = resQuery.replace("<>", " <> ");
+
+    return resQuery;
   }
 }
