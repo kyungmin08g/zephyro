@@ -3,7 +3,7 @@ package com.github.kyungmin08g.zephyro.timer.aspect;
 import com.github.kyungmin08g.zephyro.core.logger.ZephyroLogger;
 import com.github.kyungmin08g.zephyro.core.logger.factory.ZephyroLoggerFactory;
 import com.github.kyungmin08g.zephyro.timer.annotation.MethodTimeTracker;
-import com.github.kyungmin08g.zephyro.timer.annotation.PerfTracker;
+import com.github.kyungmin08g.zephyro.timer.annotation.PerformanceTracker;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -15,6 +15,8 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.Method;
 import java.text.NumberFormat;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Aspect
 public class TimerAspect {
@@ -47,7 +49,7 @@ public class TimerAspect {
     }
   }
 
-  @Around("@annotation(com.github.kyungmin08g.zephyro.timer.annotation.PerfTracker)")
+  @Around("@annotation(com.github.kyungmin08g.zephyro.timer.annotation.PerformanceTracker)")
   public Object performanceLog(ProceedingJoinPoint process) {
     try {
       long startSecond = System.currentTimeMillis();
@@ -56,10 +58,10 @@ public class TimerAspect {
       long endNano = System.nanoTime();
       long endSecond = System.currentTimeMillis();
 
-      // 메서드 레벨에서 @Profiled 어노테이션의 color 필드 구하기
+      // 메서드 레벨에서 @PerformanceTracker 어노테이션의 color 필드 구하기
       MethodSignature methodSignature = (MethodSignature) process.getSignature();
       Method method = methodSignature.getMethod();
-      PerfTracker profiled = method.getAnnotation(PerfTracker.class);
+      PerformanceTracker profiled = method.getAnnotation(PerformanceTracker.class);
 
       log.info(
         getProfiledMessageFormat(process, startNano, endNano, startSecond, endSecond),
@@ -73,6 +75,8 @@ public class TimerAspect {
   }
 
   private String getExecutionTimeMessageFormat(ProceedingJoinPoint process, long startSecond, long endSecond) {
+    String time = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+
     // 해당 메서드 실행 시간 구하기
     String elapsedSecond = String.valueOf((endSecond - startSecond) / 1000.0); // 밀리초(ms) -> 초(s)로 변환
 
@@ -81,8 +85,8 @@ public class TimerAspect {
     String methodName = process.getSignature().getName();
 
     return String.format(
-      "%s#%s() 메서드 실행 시간: %s초",
-      className, methodName, elapsedSecond
+      "[%s] %s#%s() 메서드 실행 시간: %s초",
+      time, className, methodName, elapsedSecond
     );
   }
 
@@ -93,6 +97,8 @@ public class TimerAspect {
     long stratSecond,
     long endSecond
   ) {
+    String time = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+
     // 나노초 구하기
     long nano = (endNano - startNano);
     String elapsedNano = NumberFormat.getInstance().format(nano);
@@ -160,7 +166,7 @@ public class TimerAspect {
     }
 
     return String.format(
-      "%s 메서드에 대한 성능 측정 결과입니다.\n" +
+      "[%s] %s 메서드에 대한 성능 측정 결과입니다.\n" +
         "----------------------------------------------------------------------------\n" +
         "실행 컨텍스트: thread=%s | pip=%s\n" +
         "위치: %s\n" +
@@ -170,6 +176,7 @@ public class TimerAspect {
         "가비지 컬렉션: 횟수=%s, 누적 시간=%sms | 로드된 클래스 수: %s\n" +
         "시스템: %s %s (%s) | 자바 버전: %s\n" +
         "----------------------------------------------------------------------------",
+      time,
       (process.getTarget().getClass().getSimpleName() + "#" + methodName + "()"),
       thread, jvmPip,
       (className + "#" + methodName + "()"),
