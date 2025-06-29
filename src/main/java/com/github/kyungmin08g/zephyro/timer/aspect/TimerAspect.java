@@ -15,6 +15,9 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.Method;
 import java.text.NumberFormat;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Aspect
 public class TimerAspect {
@@ -73,6 +76,8 @@ public class TimerAspect {
   }
 
   private String getExecutionTimeMessageFormat(ProceedingJoinPoint process, long startSecond, long endSecond) {
+    String time = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
     // 해당 메서드 실행 시간 구하기
     String elapsedSecond = String.valueOf((endSecond - startSecond) / 1000.0); // 밀리초(ms) -> 초(s)로 변환
 
@@ -81,8 +86,8 @@ public class TimerAspect {
     String methodName = process.getSignature().getName();
 
     return String.format(
-      "%s#%s() 메서드 실행 시간: %s초",
-      className, methodName, elapsedSecond
+      "[%s] %s#%s() 메서드 실행 시간: %s초",
+      time, className, methodName, elapsedSecond
     );
   }
 
@@ -93,6 +98,8 @@ public class TimerAspect {
     long stratSecond,
     long endSecond
   ) {
+    String time = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
     // 나노초 구하기
     long nano = (endNano - startNano);
     String elapsedNano = NumberFormat.getInstance().format(nano);
@@ -160,7 +167,7 @@ public class TimerAspect {
     }
 
     return String.format(
-      "%s 메서드에 대한 성능 측정 결과입니다.\n" +
+      "[%s] %s 메서드에 대한 성능 측정 결과입니다.\n" +
         "----------------------------------------------------------------------------\n" +
         "실행 컨텍스트: thread=%s | pip=%s\n" +
         "위치: %s\n" +
@@ -170,6 +177,7 @@ public class TimerAspect {
         "가비지 컬렉션: 횟수=%s, 누적 시간=%sms | 로드된 클래스 수: %s\n" +
         "시스템: %s %s (%s) | 자바 버전: %s\n" +
         "----------------------------------------------------------------------------",
+      time,
       (process.getTarget().getClass().getSimpleName() + "#" + methodName + "()"),
       thread, jvmPip,
       (className + "#" + methodName + "()"),

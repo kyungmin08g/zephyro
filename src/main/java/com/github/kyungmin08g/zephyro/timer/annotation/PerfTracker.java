@@ -1,6 +1,6 @@
 package com.github.kyungmin08g.zephyro.timer.annotation;
 
-import com.github.kyungmin08g.zephyro.core.utils.enums.Color;
+import com.github.kyungmin08g.zephyro.core.enums.Color;
 
 import java.lang.annotation.*;
 

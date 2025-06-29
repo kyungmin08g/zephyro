@@ -1,4 +1,4 @@
-package com.github.kyungmin08g.zephyro.core.utils.enums;
+package com.github.kyungmin08g.zephyro.core.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

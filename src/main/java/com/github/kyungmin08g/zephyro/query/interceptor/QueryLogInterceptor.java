@@ -2,16 +2,17 @@ package com.github.kyungmin08g.zephyro.query.interceptor;
 
 import com.github.kyungmin08g.zephyro.core.logger.ZephyroLogger;
 import com.github.kyungmin08g.zephyro.core.logger.factory.ZephyroLoggerFactory;
-import com.github.kyungmin08g.zephyro.core.utils.enums.Color;
+import com.github.kyungmin08g.zephyro.core.enums.Color;
 import com.github.kyungmin08g.zephyro.query.enums.SqlKeyword;
 import org.hibernate.resource.jdbc.spi.StatementInspector;
+import org.slf4j.MDC;
 
 public class QueryLogInterceptor implements StatementInspector {
   private static final ZephyroLogger log = ZephyroLoggerFactory.getLogger(QueryLogInterceptor.class);
 
   @Override
   public String inspect(String query) {
-    log.info(getMessageFormat(query), false);
+    log.info(getMessageFormat(query, MDC.get("time"), MDC.get("ip"), MDC.get("class"), MDC.get("method"), MDC.get("env")), false);
     return query;
   }
 
@@ -27,15 +28,27 @@ public class QueryLogInterceptor implements StatementInspector {
     select n1_0.id,n1_0.content,n1_0.created_at,n1_0.member_id,n1_0.thumbnail_url,n1_0.title,n1_0.updated_at from notice n1_0 where n1_0.id=?
     update notice set content=?,member_id=?,thumbnail_url=?,title=?,updated_at=? where id=?
    */
-  private String getMessageFormat(String query) {
-    String aQuery = query.replaceAll("[a-z]*?[0-9]_[0-9].", "")
+  private String getMessageFormat(String query, String time, String ip, String clazz, String method, String env) {
+    String resQuery = query.replaceAll("[a-z]*?[0-9]_[0-9].", "")
       .replace("=", Color.BLUE.getCode() + " = " + Color.RESET.getCode())
       .replace(",", ", "); // m1_0, te1_0, n1_0 등
 
+    // SQL 특정 키워드를 대문자로 변환
     for (SqlKeyword keyword : SqlKeyword.values()) {
-      aQuery = aQuery.replaceAll(" ?" + keyword.name().toLowerCase() + " ", " " + Color.YELLOW.getCode() + keyword.name() + Color.RESET.getCode() + " "); // SQL 특정 키워드를 대문자로 변환
+      resQuery = resQuery.replaceAll(" ?" + keyword.name().toLowerCase() + " ", " " + Color.BLUE.getCode() + keyword.name() + Color.RESET.getCode() + " ");
     }
+    resQuery = resQuery + ";";
 
-    return String.format(aQuery);
+    String firstPackageDomain = clazz.split("\\.")[0];
+    String secondPackageDomain = clazz.split("\\.")[1];
+    String packageName = firstPackageDomain.charAt(0) + "."
+      + secondPackageDomain.charAt(0) + "."
+      + clazz.substring(firstPackageDomain.length() + secondPackageDomain.length() + 2);
+
+    return String.format(
+      "[%s] [%s] [%s] [%s] %s",
+      time, ip, env, packageName + "#" + method + "()",
+      resQuery.substring(1)
+    );
   }
 }

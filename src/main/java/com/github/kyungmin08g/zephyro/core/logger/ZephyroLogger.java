@@ -1,8 +1,8 @@
 package com.github.kyungmin08g.zephyro.core.logger;
 
 import com.github.kyungmin08g.zephyro.core.logger.event.ZephyroLogEvent;
-import com.github.kyungmin08g.zephyro.core.utils.enums.Color;
-import com.github.kyungmin08g.zephyro.core.utils.enums.LogLevel;
+import com.github.kyungmin08g.zephyro.core.enums.Color;
+import com.github.kyungmin08g.zephyro.core.enums.LogLevel;
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;

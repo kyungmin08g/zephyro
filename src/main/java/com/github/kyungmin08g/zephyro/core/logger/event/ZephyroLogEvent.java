@@ -1,7 +1,7 @@
 package com.github.kyungmin08g.zephyro.core.logger.event;
 
-import com.github.kyungmin08g.zephyro.core.utils.enums.LogLevel;
-import com.github.kyungmin08g.zephyro.core.utils.enums.Color;
+import com.github.kyungmin08g.zephyro.core.enums.LogLevel;
+import com.github.kyungmin08g.zephyro.core.enums.Color;
 import lombok.*;
 
 import java.lang.management.ManagementFactory;
@@ -72,13 +72,8 @@ public class ZephyroLogEvent {
     LogLevel level,
     Color defaultColor
   ) {
-    String time = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
-    ZonedDateTime now = ZonedDateTime.now();
-    String offset = now.getOffset().getId();
-
     return String.format(
-      "%s  %s%s%s ▶ %s%s%s",
-      time + offset,
+      "[%s%s%s] %s%s%s",
       color.getCode(),
       level,
       Color.RESET.getCode(),

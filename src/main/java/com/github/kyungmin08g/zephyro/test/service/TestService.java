@@ -2,7 +2,6 @@ package com.github.kyungmin08g.zephyro.test.service;
 
 import com.github.kyungmin08g.zephyro.core.logger.ZephyroLogger;
 import com.github.kyungmin08g.zephyro.core.logger.factory.ZephyroLoggerFactory;
-import com.github.kyungmin08g.zephyro.core.utils.enums.Color;
 import com.github.kyungmin08g.zephyro.test.domain.TestEntity;
 import com.github.kyungmin08g.zephyro.test.repository.TestRepository;
 import com.github.kyungmin08g.zephyro.timer.annotation.MethodTimeTracker;
