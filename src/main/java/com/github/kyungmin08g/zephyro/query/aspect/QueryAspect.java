@@ -18,9 +18,9 @@ public class QueryAspect {
   @Autowired
   private HttpServletRequest request;
 
-  @Before("@within(com.github.kyungmin08g.zephyro.query.annotation.MonitorTarget)")
+  @Before("@within(com.github.kyungmin08g.zephyro.query.annotation.QueryLogTarget)")
   public void addQueryLogParameters(@NonNull JoinPoint process) {
-    String time = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    String time = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
     String className = process.getTarget().getClass().getName();
     String methodName = process.getSignature().getName();
 

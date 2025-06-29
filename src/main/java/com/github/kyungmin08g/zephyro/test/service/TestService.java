@@ -5,7 +5,7 @@ import com.github.kyungmin08g.zephyro.core.logger.factory.ZephyroLoggerFactory;
 import com.github.kyungmin08g.zephyro.test.domain.TestEntity;
 import com.github.kyungmin08g.zephyro.test.repository.TestRepository;
 import com.github.kyungmin08g.zephyro.timer.annotation.MethodTimeTracker;
-import com.github.kyungmin08g.zephyro.timer.annotation.PerfTracker;
+import com.github.kyungmin08g.zephyro.timer.annotation.PerformanceTracker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class TestService {
   private static final ZephyroLogger log = ZephyroLoggerFactory.getLogger(TestService.class);
   private final TestRepository testRepository;
 
-  @PerfTracker
+  @PerformanceTracker
   @MethodTimeTracker
   public void testRunTimer() {
     try {

@@ -7,6 +7,6 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface PerfTracker {
+public @interface PerformanceTracker {
   Color color() default Color.RESET;
 }

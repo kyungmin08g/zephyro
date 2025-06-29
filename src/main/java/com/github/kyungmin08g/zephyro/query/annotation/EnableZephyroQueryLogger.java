@@ -9,5 +9,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Import(QueryInterceptorBeanRegistrar.class)
 @Documented
-public @interface EnableQueryLog {
+public @interface EnableZephyroQueryLogger {
 }

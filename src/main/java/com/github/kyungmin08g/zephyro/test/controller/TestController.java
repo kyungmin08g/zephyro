@@ -1,6 +1,6 @@
 package com.github.kyungmin08g.zephyro.test.controller;
 
-import com.github.kyungmin08g.zephyro.query.annotation.MonitorTarget;
+import com.github.kyungmin08g.zephyro.query.annotation.QueryLogTarget;
 import com.github.kyungmin08g.zephyro.test.service.TestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/test")
 @RequiredArgsConstructor
-@MonitorTarget
+@QueryLogTarget
 public class TestController {
   private final TestService testService;
 

@@ -3,7 +3,7 @@ package com.github.kyungmin08g.zephyro.timer.aspect;
 import com.github.kyungmin08g.zephyro.core.logger.ZephyroLogger;
 import com.github.kyungmin08g.zephyro.core.logger.factory.ZephyroLoggerFactory;
 import com.github.kyungmin08g.zephyro.timer.annotation.MethodTimeTracker;
-import com.github.kyungmin08g.zephyro.timer.annotation.PerfTracker;
+import com.github.kyungmin08g.zephyro.timer.annotation.PerformanceTracker;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -49,7 +49,7 @@ public class TimerAspect {
     }
   }
 
-  @Around("@annotation(com.github.kyungmin08g.zephyro.timer.annotation.PerfTracker)")
+  @Around("@annotation(com.github.kyungmin08g.zephyro.timer.annotation.PerformanceTracker)")
   public Object performanceLog(ProceedingJoinPoint process) {
     try {
       long startSecond = System.currentTimeMillis();
@@ -61,7 +61,7 @@ public class TimerAspect {
       // 메서드 레벨에서 @Profiled 어노테이션의 color 필드 구하기
       MethodSignature methodSignature = (MethodSignature) process.getSignature();
       Method method = methodSignature.getMethod();
-      PerfTracker profiled = method.getAnnotation(PerfTracker.class);
+      PerformanceTracker profiled = method.getAnnotation(PerformanceTracker.class);
 
       log.info(
         getProfiledMessageFormat(process, startNano, endNano, startSecond, endSecond),
@@ -75,7 +75,7 @@ public class TimerAspect {
   }
 
   private String getExecutionTimeMessageFormat(ProceedingJoinPoint process, long startSecond, long endSecond) {
-    String time = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    String time = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
 
     // 해당 메서드 실행 시간 구하기
     String elapsedSecond = String.valueOf((endSecond - startSecond) / 1000.0); // 밀리초(ms) -> 초(s)로 변환
@@ -97,7 +97,7 @@ public class TimerAspect {
     long stratSecond,
     long endSecond
   ) {
-    String time = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    String time = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
 
     // 나노초 구하기
     long nano = (endNano - startNano);
