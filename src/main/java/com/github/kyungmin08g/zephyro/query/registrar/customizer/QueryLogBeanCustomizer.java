@@ -6,7 +6,10 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomi
 
 import java.util.Map;
 
-public class QueryLogCustomizer implements HibernatePropertiesCustomizer {
+/**
+ * HibernateProperties에 포함될 설정들을 구성하는 HibernatePropertiesCustomizer 구현체
+ */
+public class QueryLogBeanCustomizer implements HibernatePropertiesCustomizer {
 
   @Override
   public void customize(Map<String, Object> hibernateProperties) {

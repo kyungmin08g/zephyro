@@ -2,6 +2,9 @@ package com.github.kyungmin08g.zephyro.query.enums;
 
 import lombok.Getter;
 
+/**
+ * 쿼리 포맷을 위한 SQL 특정 키워드
+ */
 @Getter
 public enum SQLKeyword {
   SELECT, FROM, WHERE, GROUP, HAVING, ORDER, INSERT, INTO,

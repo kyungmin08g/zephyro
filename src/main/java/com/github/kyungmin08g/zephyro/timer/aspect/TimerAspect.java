@@ -58,7 +58,7 @@ public class TimerAspect {
       long endNano = System.nanoTime();
       long endSecond = System.currentTimeMillis();
 
-      // 메서드 레벨에서 @Profiled 어노테이션의 color 필드 구하기
+      // 메서드 레벨에서 @PerformanceTracker 어노테이션의 color 필드 구하기
       MethodSignature methodSignature = (MethodSignature) process.getSignature();
       Method method = methodSignature.getMethod();
       PerformanceTracker profiled = method.getAnnotation(PerformanceTracker.class);
