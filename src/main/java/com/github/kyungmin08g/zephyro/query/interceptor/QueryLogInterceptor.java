@@ -3,7 +3,7 @@ package com.github.kyungmin08g.zephyro.query.interceptor;
 import com.github.kyungmin08g.zephyro.core.logger.ZephyroLogger;
 import com.github.kyungmin08g.zephyro.core.logger.factory.ZephyroLoggerFactory;
 import com.github.kyungmin08g.zephyro.core.enums.Color;
-import com.github.kyungmin08g.zephyro.query.enums.SqlKeyword;
+import com.github.kyungmin08g.zephyro.query.enums.SQLKeyword;
 import org.hibernate.resource.jdbc.spi.StatementInspector;
 import org.slf4j.MDC;
 
@@ -34,7 +34,7 @@ public class QueryLogInterceptor implements StatementInspector {
       .replace(",", ", "); // m1_0, te1_0, n1_0 등
 
     // SQL 특정 키워드를 대문자로 변환
-    for (SqlKeyword keyword : SqlKeyword.values()) {
+    for (SQLKeyword keyword : SQLKeyword.values()) {
       resQuery = resQuery.replaceAll(" ?" + keyword.name().toLowerCase() + " ", " " + Color.BLUE.getCode() + keyword.name() + Color.RESET.getCode() + " ");
     }
     resQuery = resQuery + ";";

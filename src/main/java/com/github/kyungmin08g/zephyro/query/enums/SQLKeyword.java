@@ -3,7 +3,7 @@ package com.github.kyungmin08g.zephyro.query.enums;
 import lombok.Getter;
 
 @Getter
-public enum SqlKeyword {
+public enum SQLKeyword {
   SELECT, FROM, WHERE, GROUP, HAVING, ORDER, INSERT, INTO,
   VALUES, UPDATE, SET, DELETE, JOIN, LEFT, RIGHT, FULL,
   UNION, ALL, SUBQUERY, EXISTS, NOT, ANY, LIKE, BETWEEN,

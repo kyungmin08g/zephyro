@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomi
 
 import java.util.Map;
 
-public class QuerySpyCustomizer implements HibernatePropertiesCustomizer {
+public class QueryLogCustomizer implements HibernatePropertiesCustomizer {
 
   @Override
   public void customize(Map<String, Object> hibernateProperties) {
