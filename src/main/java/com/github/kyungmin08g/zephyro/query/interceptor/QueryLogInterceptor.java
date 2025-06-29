@@ -38,6 +38,7 @@ public class QueryLogInterceptor implements StatementInspector {
       resQuery = resQuery.replaceAll(" ?" + keyword.name().toLowerCase() + " ", " " + Color.BLUE.getCode() + keyword.name() + Color.RESET.getCode() + " ");
     }
     resQuery = resQuery + ";";
+    resQuery = resQuery.replace("<>", " <> ");
 
     String firstPackageDomain = clazz.split("\\.")[0];
     String secondPackageDomain = clazz.split("\\.")[1];

@@ -19,7 +19,7 @@ public class QueryAspect {
   private HttpServletRequest request;
 
   @Before(
-    "@annotation(com.github.kyungmin08g.zephyro.query.annotation.MonitorTarget)" +
+    "@within(com.github.kyungmin08g.zephyro.query.annotation.MonitorTarget)" +
     "@annotation(org.springframework.web.bind.annotation.*)"
   )
   public void addQueryLogParameters(@NonNull JoinPoint process) {
