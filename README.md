@@ -33,7 +33,7 @@ dependencies {
     implementation 'com.github.kyungmin08g:zephyro:1.0.0'
 }
 ```
-</br></br>
+</br>
 ## 사용 방법
 #### ZephyroLogger
 사용자가 라이브러리 커스텀 로거(ZephyroLogger)를 사용할 수 있도록 구현했습니다. 원래는 라이브러리 내부에서만 동작하도록 하려고 했지만 ZephyroLogger의 성능이 너무 좋아서 풀어줬습니다. 🤣</br>
