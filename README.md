@@ -22,7 +22,7 @@ ZephyroLogger의 성능 차이를 비교했는데 ZephyroLogger가 압도적으�
 성능 측정 로그에는 나노초(ns)/초(ns), OS 정보, 패키지 경로, 컨텍스트 정보, JVM 관련 정보, 로드된 클래스 수, 가비지 컬렉션(GC) 등이 포함되어 있습니다.
 
 ## Build
-Zephory 라이브러리를 사용하기 위해서는 빌드(Gradle) 설정이 필요합니다. (Gradle 기준 ⤵️)
+Zephyro 라이브러리를 사용하기 위해서는 빌드(Gradle) 설정이 필요합니다. (Gradle 기준 ⤵️)
 
 ```gradle
 repositories {
