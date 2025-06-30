@@ -2,7 +2,7 @@
 ### Spring AOP 어노테이션 기반 로깅 라이브러리
 
 [![Spring Boot](https://img.shields.io/badge/Gradle-8+-02303A?style=flat&logo=Gradle&logoColor=white)](https://spring.io/projects/spring-boot) [![Spring Boot](https://img.shields.io/badge/SpringBoot-6DB33F?style=flat&logo=SpringBoot&logoColor=white)](https://spring.io/projects/spring-boot) [![Spring Boot](https://img.shields.io/badge/JitPack-000000?style=flat&logo=JitPack&logoColor=white)](https://spring.io/projects/spring-boot) [![Spring Boot](https://img.shields.io/badge/Hibernate-59666C?style=flat&logo=hibernate&logoColor=white)](https://spring.io/projects/spring-boot) [![Spring Boot](https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white)](https://spring.io/projects/spring-boot)
-> AOP와 어노테이션을 활용한 경량 로깅 라이브러리
+> AOP와 어노테이션을 활용한 경량 로깅 라이브러리 
 
 ### Features
 - 라이브러리 전용 로거(ZephyroLogger)
