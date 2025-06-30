@@ -33,7 +33,7 @@ dependencies {
     implementation 'com.github.kyungmin08g:zephyro:1.0.0'
 }
 ```
-</br>
+
 ## 사용 방법
 #### ZephyroLogger
 사용자가 라이브러리 커스텀 로거(ZephyroLogger)를 사용할 수 있도록 구현했습니다. 원래는 라이브러리 내부에서만 동작하도록 하려고 했지만 ZephyroLogger의 성능이 너무 좋아서 풀어줬습니다. 🤣</br>
@@ -70,7 +70,8 @@ public void info(Object message, boolean isFormat, Color defaultColor) {
 
 #### System.out.println(); vs ZephyroLogger
 System.out.println();문이랑 ZephyroLogger랑 성능 분석을 했습니다. 그 결과 압도적으로 ZephyroLogger가 빨랐습니다.
-<img width="1211" alt="Screenshot 2025-06-25 at 3 00 04 PM" src="https://github.com/user-attachments/assets/b0ecc7a3-601f-4228-8433-df57c9f41e33" /></br></br>
+<img width="1211" alt="Screenshot 2025-06-25 at 3 00 04 PM" src="https://github.com/user-attachments/assets/b0ecc7a3-601f-4228-8433-df57c9f41e33" /></br>
+너무 뿌듯합니다ㅎㅎ 😃</br></br>
 
 #### Query Log
 쿼리 로그를 사용하기 위해서는 반드시 @EnableZephyroQueryLogger 어노테이션을 프로젝트 애플리케이션에 선언해줘야 합니다.
@@ -126,7 +127,7 @@ public void runTimer() {
     }
 }
 ```
-해당 메서드를 호출하면 아래와 같이 메서드의 성능을 측정한 로그가 출력됩니다.
+해당 메서드를 호출하면 아래 예시와 같이 메서드의 성능을 측정한 로그가 출력됩니다.
 ```sh
 [INFO] [2025-06-30 16:13:26.094] TestService#testRunTimer() 메서드에 대한 성능 측정 결과입니다.
 ----------------------------------------------------------------------------
