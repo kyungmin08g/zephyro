@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.github.kyungmin08g'
-version = '0.0.28-TEST'
+version = '0.0.29-TEST'
 
 java {
     withSourcesJar()
@@ -29,10 +29,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web:3.5.3'
     implementation 'org.springframework.boot:spring-boot-starter-aop:3.5.3'
     implementation 'org.hibernate:hibernate-core:7.0.3.Final'
-
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    runtimeOnly 'com.mysql:mysql-connector-j'
-
+//    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//    runtimeOnly 'com.mysql:mysql-connector-j'
     implementation 'com.lmax:disruptor:4.0.0'
     compileOnly 'org.projectlombok:lombok:1.18.32'
     annotationProcessor 'org.projectlombok:lombok:1.18.32'
